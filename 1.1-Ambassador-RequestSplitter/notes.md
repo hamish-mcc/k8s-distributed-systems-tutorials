@@ -1,5 +1,7 @@
 # 1.1 Ambassador (Single Node Pattern) - Request Splitter
 
+*Deploying a request splitting ambassador with NGINX and Kubernetes*
+
 [Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
 
 [Reference GitHub Repo](https://github.com/brendandburns/designing-distributed-systems-labs/blob/master/1.%20Single%20Node%20Pattern/1.1.%20Request%20Splitter/README.md)

@@ -1,0 +1,38 @@
+# This deployment fires up the dummy service that we are trying to protect from overload when it enters an unhealthy state, so that it can recover. Because this dummy-deployment
+# exposes a /fakeerrormodeon endpoint, we can make it "fake" an error that will trigger the circuit breaker by returning a 503 from the /ready endpoint (see server.js)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dummy-deployment
+spec:
+  selector:
+    matchLabels:
+      app: dummy-deployment
+  # For simplicity we'll just fire up a single replica in our load balancer for this service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dummy-deployment
+    spec:
+      containers:
+        - name: dummy-depoyment
+          # This is were you point to the image you deployed to the Docker image you deployed to your ACR registry
+          image: localhost:5000/dummyservice
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              # The /alive endpoint is the one we will not touch in our test case, as this will trigger a kill and recreate from Kubernetes when this does not return 200
+              path: /alive
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              memory: 64Mi
+              cpu: 250m
+            limits:
+              memory: 128Mi
+              cpu: 500m
