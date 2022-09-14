@@ -1,12 +1,12 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: dictionary-server-service
+  name: nginx-service
 spec:
   selector:
-    app: dictionary-server
+    app: nginx-ssl
   type: LoadBalancer
   ports:
     - protocol: TCP
-      port: 8080
-      targetPort: 8080
+      port: 443
+      targetPort: 443

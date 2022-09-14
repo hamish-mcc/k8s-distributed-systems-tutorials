@@ -1,2 +1,3 @@
-**/*/nginx-trial.crt
-**/*/nginx-trial.key
+*.pdf
+*.crt
+*.key
