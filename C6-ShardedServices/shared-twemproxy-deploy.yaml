@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shared-twemproxy
+spec:
+  selector:
+    matchLabels:
+      app: shared-twemproxy
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: shared-twemproxy
+    spec:
+      containers:
+        - name: twemproxy
+          image: ganomede/twemproxy
+          command:
+            - nutcracker
+            - -c
+            - /etc/config/shared-nutcracker.yaml
+            - -v
+            - '7'
+            - -s
+            - '6222'
+          resources:
+            requests:
+              memory: 1Gi
+            limits:
+              memory: 1Gi
+              cpu: 500m
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+      volumes:
+        - name: config-volume
+          configMap:
+            name: shared-twem-config
